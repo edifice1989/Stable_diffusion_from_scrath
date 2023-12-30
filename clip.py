@@ -3,6 +3,41 @@ from torch import nn
 from torch.nn import functional as F
 from attention import SelfAttention
 
+"""
+File Name: clip.py
+Description: This script is used to produce pre-trained CLIP weights (v1-5-pruned-emaonly.ckpt from https://huggingface.co/runwayml/stable-diffusion-v1-5/tree/main) text encoder and prompt embedding 
+
+How to implement the original CLIP architecture model trained on?
+load the model of v1-5-pruned-emaonly.ckpt 
+ >>> models = model_loader.preload_models_from_standard_weights(model_file='../checkpoint/v1-5-pruned-emaonly.ckpt ', DEVICE='cpu')
+ >>> model['clip']
+to get following model specification:
+CLIP(
+  (embedding): CLIPEmbedding(
+    (token_embedding): Embedding(49408, 768)
+  )
+  (layers): ModuleList(
+    (0-11): 12 x CLIPLayer(
+      (layernorm_1): LayerNorm((768,), eps=1e-05, elementwise_affine=True)
+      (attention): SelfAttention(
+        (in_proj): Linear(in_features=768, out_features=2304, bias=True)
+        (out_proj): Linear(in_features=768, out_features=768, bias=True)
+      )
+      (layernorm_2): LayerNorm((768,), eps=1e-05, elementwise_affine=True)
+      (linear_1): Linear(in_features=768, out_features=3072, bias=True)
+      (linear_2): Linear(in_features=3072, out_features=768, bias=True)
+    )
+  )
+  (layernorm): LayerNorm((768,), eps=1e-05, elementwise_affine=True)
+)
+
+How to use pre-trained CLIP for inference?
+load the weights into Class CLIP
+>>> CLIP.load_state_dict(state_dict['clip'], strict=True)
+
+see how to convert state_dict from model_converter.py
+"""
+
 class CLIPEmbedding(nn.Module):
     def __init__(self, n_vocab: int, n_embd: int, n_token: int):
         super().__init__()
