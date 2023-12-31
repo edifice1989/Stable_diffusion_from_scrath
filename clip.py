@@ -30,7 +30,10 @@ CLIP(
   )
   (layernorm): LayerNorm((768,), eps=1e-05, elementwise_affine=True)
 )
-
+Where the Embedding input dim comes from?
+vocab.json ther are 49408 key values pairs mapping from words/special letters to numbers
+ downloaded from https://huggingface.co/runwayml/stable-diffusion-v1-5/tree/main/tokenizer
+ 
 How to use pre-trained CLIP for inference?
 load the weights into Class CLIP
 >>> CLIP.load_state_dict(state_dict['clip'], strict=True)
